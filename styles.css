@@ -1,0 +1,17 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  background-color: green;
+}
+
+#game {
+  width: 400;
+  height: 400;
+}
