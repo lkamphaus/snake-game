@@ -24,16 +24,27 @@ let foodY = 5;
 let velocityX = 0;
 let velocityY = 0;
 
+let score = 0;
+
+let snakeBody = false;
+
 //game loop
 function drawGame() {
   clearScreen();
-  changeSnackPosition();
+  changeSnakePosition();
 
   checkFoodCollision();
-
   drawFood();
   drawSnake();
+
+  drawScore();
   setTimeout(drawGame, 1000 / speed);
+}
+
+function drawScore() {
+  ctx.fillStyle = "white";
+  ctx.font = "12px Roboto";
+  ctx.fillText("Score " + score, canvas.width - 50, 10)
 }
 
 function clearScreen() {
@@ -43,7 +54,12 @@ function clearScreen() {
 
 function drawSnake() {
 
-  ctx.fillStyle = "yellow";
+  if (!snakeBody) {
+    ctx.fillStyle = "yellow";
+    snakeBody = !snakeBody
+  } else {
+    ctx.fillStyle = "red";
+  }
 
   for (let i = 0; i < snakeParts.length; i++) {
     let part = snakeParts[i];
@@ -57,22 +73,26 @@ function drawSnake() {
   }
 
   ctx.fillStyle = "black";
+
   ctx.fillRect(headX * tileCount, headY * tileCount, tileSize, tileSize);
 }
 
-function changeSnackPosition() {
+function changeSnakePosition() {
   headX = headX + velocityX;
   headY = headY + velocityY;
 }
 
 function drawFood() {
-  ctx.fillStyle = "brown";
+  ctx.fillStyle = "pink";
   ctx.fillRect(foodX * tileCount, foodY * tileCount, tileSize, tileSize);
 }
 
 function checkFoodCollision() {
   if (foodX === headX && foodY === headY) {
+    foodX = Math.floor(Math.random() * tileCount);
+    foodY = Math.floor(Math.random() * tileCount);
     tailLength++
+    score++
   }
 }
 
