@@ -9,7 +9,7 @@ class SnakePart {
   }
 }
 
-let speed = 10;
+let speed = 8;
 
 let tileCount = 20;
 let tileSize = canvas.width / tileCount - 2;
@@ -25,8 +25,6 @@ let velocityX = 0;
 let velocityY = 0;
 
 let score = 0;
-
-let snakeBody = false;
 
 //game loop
 function drawGame() {
@@ -44,16 +42,44 @@ function drawGame() {
   drawSnake();
 
   drawScore();
+
+  if (score > 2) {
+    speed = 11;
+  }
+
+  if (score > 5) {
+    speed = 15;
+  }
+
   setTimeout(drawGame, 1000 / speed);
 }
 
 function gameOver() {
   let gameOver = false;
 
+  if (velocityY === 0 && velocityX === 0) {
+    return false;
+  }
+
   //borders
   if (headX < 0) {
     gameOver = true;
+  } else if (headX >= tileCount) {
+    gameOver = true;
+  } else if (headY < 0) {
+    gameOver = true;
+  } else if (headY >= tileCount) {
+    gameOver = true;
   }
+
+  for (let i = 0; i < snakeParts.length; i++) {
+    let part = snakeParts[i];
+    if (part.x === headX && part.y === headY) {
+      gameOver = true;
+      break;
+    }
+  }
+
 
   if (gameOver) {
     ctx.fillStyle = "white";
@@ -77,14 +103,7 @@ function clearScreen() {
 }
 
 function drawSnake() {
-
-  if (!snakeBody) {
-    ctx.fillStyle = "yellow";
-    snakeBody = !snakeBody
-    console.log('check', snakeBody);
-  } else {
-    ctx.fillStyle = "red";
-  }
+  ctx.fillStyle = "yellow";
 
   for (let i = 0; i < snakeParts.length; i++) {
     let part = snakeParts[i];
@@ -108,7 +127,7 @@ function changeSnakePosition() {
 }
 
 function drawFood() {
-  ctx.fillStyle = "pink";
+  ctx.fillStyle = "red";
   ctx.fillRect(foodX * tileCount, foodY * tileCount, tileSize, tileSize);
 }
 
