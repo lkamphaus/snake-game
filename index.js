@@ -30,8 +30,14 @@ let snakeBody = false;
 
 //game loop
 function drawGame() {
-  clearScreen();
   changeSnakePosition();
+
+  let result = gameOver();
+  if (result) {
+    return;
+  }
+
+  clearScreen();
 
   checkFoodCollision();
   drawFood();
@@ -39,6 +45,24 @@ function drawGame() {
 
   drawScore();
   setTimeout(drawGame, 1000 / speed);
+}
+
+function gameOver() {
+  let gameOver = false;
+
+  //borders
+  if (headX < 0) {
+    gameOver = true;
+  }
+
+  if (gameOver) {
+    ctx.fillStyle = "white";
+    ctx.font = "50px Verdana";
+
+    ctx.fillText("Game Over", canvas.width / 6.5, canvas.height / 2);
+  }
+
+  return gameOver;
 }
 
 function drawScore() {
@@ -57,6 +81,7 @@ function drawSnake() {
   if (!snakeBody) {
     ctx.fillStyle = "yellow";
     snakeBody = !snakeBody
+    console.log('check', snakeBody);
   } else {
     ctx.fillStyle = "red";
   }
